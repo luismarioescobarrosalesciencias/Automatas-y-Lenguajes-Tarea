@@ -28,7 +28,7 @@ corte_ (_:xs) =  corte_ xs
 
 
 bolsa:: String -> [(Char,Int)]   --Implementar 
-bolsa "" = [('',-1)]  --IMPLEMENTAR 
+bolsa "" = [(' ',-1)]  --IMPLEMENTAR 
 
 
 
@@ -151,6 +151,12 @@ data CharWithEpsilon = Car Char | EpsilonTransition
 -- Función para generar un nuevo estado
 nuevoEstado :: Int -> State
 nuevoEstado n = Q n
+
+
+--Funcion que dada una lista regresa el conjunto potencia de sus elementos (Sobre listas)
+conjuntoPotencia :: [a] -> [[a]]
+conjuntoPotencia []     = [[]]
+conjuntoPotencia (x:xs) = conjuntoPotencia xs ++ [x:ps | ps <- conjuntoPotencia xs]
 
 --Funcion que calcula la la clausura epsilon de un estado
 closure:: State -> AFNE -> [State]

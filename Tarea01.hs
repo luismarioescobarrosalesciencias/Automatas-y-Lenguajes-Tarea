@@ -2,65 +2,28 @@ module Tarea01 where
 import Data.Set (Set)
 import qualified Data.Set as Set
 
-
---Primera Parte: Funciones Recursivas 
-
-esPalindromo:: Eq a => [a] -> Bool  
-esPalindromo l =  False  --Implementar 
-
---funciones auxiliares para esPalindromo (Opcional su uso)
-
-ultimo_elemento:: Eq a => [a] -> a
-ultimo_elemento [a] = a
-ultimo_elemento (_:xs) = ultimo_elemento xs
-
-corte_:: Eq a => [a] -> [a]
-corte_ [] = []
-corte_ [_] = []
-corte_ (_:xs) =  corte_ xs
-
-
-
---bolsa. Función que recibe una cadena y devuelve una lista de tuplas
---       con el número de ocurrencias de cada letra de la palabra.
-
---Prohibido usar Set (Eso se usara mas adelante )
-
-
-bolsa:: String -> [(Char,Int)]   --Implementar 
-bolsa "" = [(' ',-1)]  --IMPLEMENTAR 
-
-
-
-unicos:: Eq a =>[a] -> [a] -> [a]  -- Funcion auxiliar para bolsa 
-unicos [] l = l
-unicos (x:xs) l2 
-    | x `notElem` l2 = unicos (xs)(l2 ++ [x])
-    | otherwise =  unicos xs l2
-
-
-cuenta_caracter :: String -> Char -> Int  -- funcion auxiliar para bolsa 
-cuenta_caracter [] _ = 0
-cuenta_caracter (x:xs) a
-    | x == a  = 1 + cuenta_caracter xs a
-    | otherwise = cuenta_caracter xs a                  
-
-
---Segunda Parte: Cadenas y Lenguajes 
-
 -- Definición de símbolo como un tipo nuevo
-newtype Simbolo = Simbolo Char
+data Simbolo = ASCII Char | EpsilonSy
   deriving (Eq, Ord)
 
--- Definición de la cadena como una lista de símbolos
+-- Definición de alfabeto como un conjunto de símbolos
+newtype Alfabeto = Alfabeto [Simbolo]
+  deriving (Eq, Show)
+
+-- Definición de palabra como una lista de símbolos
 newtype Cadena = Cadena [Simbolo]
   deriving (Eq)
 
+-- Definición de lenguaje como una lista de palabras
+newtype Lenguaje = Lenguaje [Cadena]
+  deriving (Eq, Show)
+
 -- Instancia personalizada de Show para Simbolo
 instance Show Simbolo where
-    show (Simbolo c) = [c]
+    show (ASCII c) = [c]
+    show EpsilonSy = "ε"
 
--- Instancia personalizada de Show para Cadena
+-- Instancia personalizada de Show para Palabra
 instance Show Cadena where
     show (Cadena []) = "ε"
     show (Cadena simbolos) = concatMap show simbolos
@@ -74,33 +37,19 @@ esVacia :: Cadena -> Bool
 esVacia (Cadena []) = True
 esVacia _ = False
 
---Funciones auxiliares 
+-- Función para obtener el símbolo más a la derecha de una cadena
+first :: Cadena -> Simbolo
+first (Cadena []) = EpsilonSy
+first (Cadena simbolos) = "Implementar"
 
-cabezaCadena :: Cadena -> Simbolo
-cabezaCadena (Cadena (x:xs)) = x
+-- Función para obtener el prefijo de una cadena (sin el último símbolo)
+prefix :: Cadena -> Cadena
+prefix (Cadena []) = cadenaVacia
+prefix (Cadena simbolos) = "Implementar"
 
-quitacabeza :: Cadena -> Cadena
-quitacabeza (Cadena []) = cadenaVacia
-quitacabeza (Cadena (_:xs)) = Cadena xs
-
-concatCadenaSimbolo :: Simbolo -> Cadena  -> Cadena
-concatCadenaSimbolo  (Simbolo a) (Cadena w )  =  (Cadena $[Simbolo a] ++ w )   
-
-
---Ejercicios:
-
-concatenacionC :: Cadena -> Cadena  -> Cadena  
-concatenacionC (Cadena [])  w  = w
-concatenacionC (Cadena u ) (Cadena w) =  w --Implementar  caso recursivo
-
-longitudC:: Cadena -> Int  
-longitudC (Cadena []) =  0 
-longitudC (Cadena w) =  -1 --Implementar caso recursivo
-
-reversaC :: Cadena -> Cadena  
-reversaC (Cadena []) = (Cadena [])
-reversaC (Cadena w ) = (Cadena [])    --Implementar caso recursivo
-
+-- Función para verificar si una palabra pertenece a un lenguaje
+membership :: Cadena -> Lenguaje -> Bool
+membership p (Lenguaje palabras) = "Implementar"
 
 --Expresiones Regulares y Automatas 
 --A partir de aqui la cadenas y simbolos de alfabetos seran representados por ASCII
@@ -176,27 +125,8 @@ closure_aux cls afne =
     then cls
     else closure_aux newStates afne 
 
---EJERCICIOS
 
-
---Funcion que transforma expresiones regulares a AFNE 
-toEAFN :: ER -> AFNE
-toEAFN _  = "IMPLEMENTAR"
-
-
---Funcion que transforma automatas afne a automatas finitos deterministas
-toAFD:: AFNE -> AFD
-toAFD _ = "IMPLEMENTAR"
-
---Funcion que verifica si una cadena de texto es aceptada o rechazada por un AFD
-readAFD:: String -> AFD -> Bool
-readAFD _ _ = "IMPLEMENTAR"
-
- --Funcion que recibe una cadena de texto e indique si dicha cadena 
- --de texto pertenece al lenguaje generado por una expresión regular
-verify:: String -> ER -> Bool
-verify _ _ = "IMPLEMENTAR"
-
+--IMPLEMENTA LAS FUNCIONES QUE SE SOLICITAN EN EL PDF
 
 
 --Ejemplo de como funciona la cerradura en un AFNE:
